@@ -1,7 +1,7 @@
 name: shortcut
 description: A flutter plugin can create desktop shortcut not actions,currently just support android.
 version: 0.0.1
-homepage:
+homepage: https://github.com/Nightmare-MY/shortcut
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
