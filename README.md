@@ -15,7 +15,7 @@ dependencies:
   shortcut:
 ```
 
-2. Import get in files that it will be used:
+2. Import shortcut in files that it will be used:
 
 ```dart
 import 'package:shortcut/shortcut.dart';
