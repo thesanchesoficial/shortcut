@@ -10,11 +10,16 @@ because i didn't find a plugin can add desktop shortcut on android,so i create i
 
 1. Add shortcut to your pubspec.yaml file:
 
+```yaml
 dependencies:
   shortcut:
-Import get in files that it will be used:
+```
 
-2. import 'package:shortcut/shortcut.dart';
+2. Import get in files that it will be used:
+
+```dart
+import 'package:shortcut/shortcut.dart';
+```
 
 ## Add a shortcut to desktop
 
