@@ -66,6 +66,8 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
         System.out.println(fileName);
         System.out.println("BBBBBB");
 
+        fileName = fileName.replaceAll("flutter_assets/", "");
+
         Bitmap image = null;
 
         Bitmap bitmap = BitmapFactory.decodeFile(fileName);
