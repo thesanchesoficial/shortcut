@@ -60,39 +60,18 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
             result.notImplemented();
         }
     }
-    private Bitmap getImageFromAssetsFile(String fileName) {
 
-        System.out.println(fileName);
+    private Bitmap getImageFromAssetsFile(String fileName) {
         fileName = fileName.replaceAll("flutter_assets/", "");
         fileName = fileName.replaceAll("file:///", "");
-        System.out.println(fileName);
 
         Bitmap image = null;
 
         Bitmap bitmap = BitmapFactory.decodeFile(fileName);
 
-        System.out.println("AAAAAA");
         System.out.println(bitmap);
-        System.out.println("BBBBBB");
-
-        if(fileName.contains("file:///")) {
-            image = bitmap;
-        } else {
-
-            AssetManager am =  flutterPluginBinding.getApplicationContext().getAssets();
-
-            try {
-                InputStream is = am.open(fileName);
-                image = BitmapFactory.decodeStream(is);
-                is.close();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
         
-        return image;
+        return bitmap;
     }
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
