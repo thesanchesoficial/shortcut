@@ -69,7 +69,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
 
         File image2 = new  File("file:///storage/emulated/0/Download/2021-07-23.16.42.056");
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap2 = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+        Bitmap bitmap2 = BitmapFactory.decodeFile(image2.getAbsolutePath(), bmOptions);
 
         System.out.println(bitmap2);
 
