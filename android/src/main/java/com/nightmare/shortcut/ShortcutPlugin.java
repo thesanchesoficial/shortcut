@@ -63,11 +63,11 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
 
     private Bitmap getImageFromAssetsFile(String fileName) {
         fileName = fileName.replaceAll("flutter_assets/", "");
-        // fileName = fileName.replaceAll("file:///", "");
 
-        Bitmap image = null;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(fileName);
+        File sd = Environment.getExternalStorageDirectory();
+        File image = new File(sd+fileName, "app");
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
 
         System.out.println(bitmap);
         
