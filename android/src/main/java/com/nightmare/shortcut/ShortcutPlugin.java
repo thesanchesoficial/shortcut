@@ -63,9 +63,9 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
             String key = flutterPluginBinding.getFlutterAssets().getAssetFilePathByName(map.get("asset"));
 
             if (map.containsKey("file")) {
-                addShortcut((String) call.argument("name"), call.argument("id"), shortcutInfoIntent, getImageFromStorage(map.get("file")));
+                addShortcut((String) call.argument("name"), (String) call.argument("id"), shortcutInfoIntent, getImageFromStorage(map.get("file")));
             } else {
-                addShortcut((String) call.argument("name"), call.argument("id"), getImageFromAssetsFile(key));
+                addShortcut((String) call.argument("name"), (String) call.argument("id"), shortcutInfoIntent, getImageFromAssetsFile(key));
             }
 
         } else if (call.method.equals("search")) {
@@ -89,9 +89,9 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                         List<ShortcutInfo> pinnedShortcuts = shortcutManager.getPinnedShortcuts();
                         boolean exists = false;
                         for (ShortcutInfo pinnedShortcut : pinnedShortcuts) {
-                            System.out.println("92 - " + pinnedShortcut.longLabel.toString());
-                            System.out.println("93 - " + pinnedShortcut.shortLabel.toString());
-                            System.out.println("94 - " + pinnedShortcut.id.toString());
+                            System.out.println("92 - " + pinnedShortcut.getLongLabel().toString());
+                            System.out.println("93 - " + pinnedShortcut.getShortLabel().toString());
+                            System.out.println("94 - " + pinnedShortcut.getId().toString());
                         }
 
                     } catch (Exception e) {
