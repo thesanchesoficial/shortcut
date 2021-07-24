@@ -9,6 +9,7 @@ class Shortcut {
     String? packageName,
     String? activityName,
     String? file,
+    required String id,
     required String assetName,
     required String name,
     Map<String, dynamic> intentExtra = const {},
@@ -17,6 +18,7 @@ class Shortcut {
     Map<String, dynamic> map = {
       'asset': assetName,
       'name': name,
+      'id': id,
     };
 
     if (packageName != null) {
@@ -40,10 +42,10 @@ class Shortcut {
   }
 
   static Future<void> searchShortcut({
-    required String name,
+    required String id,
   }) async {
 
-    await _channel.invokeMethod('search', name);
+    await _channel.invokeMethod('search', id);
 
   }
 }

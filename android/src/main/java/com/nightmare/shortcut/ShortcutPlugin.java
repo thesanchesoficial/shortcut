@@ -63,44 +63,45 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
             String key = flutterPluginBinding.getFlutterAssets().getAssetFilePathByName(map.get("asset"));
 
             if (map.containsKey("file")) {
-                addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromStorage(map.get("file")));
+                addShortcut((String) call.argument("name"), call.argument("id"), shortcutInfoIntent, getImageFromStorage(map.get("file")));
             } else {
-                addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromAssetsFile(key));
+                addShortcut((String) call.argument("name"), call.argument("id"), getImageFromAssetsFile(key));
             }
-
-            // result.success();
 
         } else if (call.method.equals("search")) {
 
-            ShortcutManager shortcutManager = mContext.getSystemService(ShortcutManager.class);
+            Map<String, String> map = (Map<String, String>) call.arguments;
 
-            if (shortcutManager == null) {
-                System.out.println("76 - false");
-            }
+            if (map.containsKey("id")) {
+                
+                ShortcutManager shortcutManager = mContext.getSystemService(ShortcutManager.class);
 
-            if (shortcutManager.isRequestPinShortcutSupported()) {
-
-                try {
-
-                    List<ShortcutInfo> pinnedShortcuts = shortcutManager.getPinnedShortcuts();
-                    boolean exists = false;
-                    for (ShortcutInfo pinnedShortcut : pinnedShortcuts) {
-                        System.out.println("86 - " + pinnedShortcut.toString());
-                    }
-
-                    if (!exists) {
-                        System.out.println("91 - false");
-                    }
-
-                    System.out.println("93 - true");
-
-                } catch (Exception e) {
-                    System.out.println("96 - false");
+                if (shortcutManager == null) {
+                    System.out.println("Error");
                 }
-            }
-            System.out.println("99 - false");
 
-            // result.success();
+                System.out.println("ESSE É O ID - " + map.get("id"));
+
+                if (shortcutManager.isRequestPinShortcutSupported()) {
+
+                    try {
+
+                        List<ShortcutInfo> pinnedShortcuts = shortcutManager.getPinnedShortcuts();
+                        boolean exists = false;
+                        for (ShortcutInfo pinnedShortcut : pinnedShortcuts) {
+                            System.out.println("92 - " + pinnedShortcut.longLabel.toString());
+                            System.out.println("93 - " + pinnedShortcut.shortLabel.toString());
+                            System.out.println("94 - " + pinnedShortcut.id.toString());
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println("Erro");
+                    }
+                }
+
+            } else {
+                System.out.println("Not found ID");
+            }
 
         } else {
             result.notImplemented();
@@ -132,7 +133,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null);
     }
 
-    public void addShortcut(String name, Intent actionIntent, Bitmap bitmap) {
+    public void addShortcut(String name, String id, Intent actionIntent, Bitmap bitmap) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
@@ -146,7 +147,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                 // Log.e("MainActivity", "Create shortcut failed");
                 return;
             }
-            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(mContext, name)
+            ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(mContext, id)
                 .setShortLabel(name)
                 .setIntent(actionIntent)
                 .setLongLabel(name)
