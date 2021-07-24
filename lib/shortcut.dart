@@ -45,7 +45,11 @@ class Shortcut {
     required String id,
   }) async {
 
-    await _channel.invokeMethod('search', id);
+    Map<String, dynamic> map = {
+      'id': id,
+    };
+
+    await _channel.invokeMethod('search', map);
 
   }
 }
