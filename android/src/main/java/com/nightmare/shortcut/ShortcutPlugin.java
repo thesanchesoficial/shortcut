@@ -87,7 +87,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                         List<ShortcutInfo> pinnedShortcuts = shortcutManager.getPinnedShortcuts();
                         boolean exists = false;
                         for (ShortcutInfo pinnedShortcut : pinnedShortcuts) {
-                            if(TextUtils.equals(pinnedShortcut.getId(), map.get("id"))) {
+                            if(pinnedShortcut.getId().equals(map.get("id"))) {
                                 exists = true;
                                 break;
                             }
