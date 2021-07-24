@@ -68,7 +68,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                 addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromAssetsFile(key));
             }
 
-            result.success();
+            // result.success();
 
         } else if (call.method.equals("search")) {
 
@@ -100,7 +100,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
             }
             System.out.println("99 - false");
 
-            result.success();
+            // result.success();
 
         } else {
             result.notImplemented();
