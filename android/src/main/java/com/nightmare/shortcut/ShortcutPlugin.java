@@ -60,10 +60,11 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
 
             shortcutInfoIntent.setAction(Intent.ACTION_MAIN);
 
+            String key = flutterPluginBinding.getFlutterAssets().getAssetFilePathByName(map.get("asset"));
+
             if (map.containsKey("file")) {
                 addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromStorage(map.get("file")));
             } else {
-                String key = flutterPluginBinding.getFlutterAssets().getAssetFilePathByName(map.get("asset"));
                 addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromAssetsFile(key));
             }
 
@@ -100,7 +101,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
             System.out.println("99 - false");
 
             result.success();
-            
+
         } else {
             result.notImplemented();
         }
