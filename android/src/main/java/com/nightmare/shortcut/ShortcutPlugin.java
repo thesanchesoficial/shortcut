@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -70,7 +71,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
 
         } else if (call.method.equals("search")) {
 
-            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            ShortcutManager shortcutManager = mContext.getSystemService(ShortcutManager.class);
 
             if (shortcutManager == null) {
                 System.out.println("76 - false");
@@ -87,7 +88,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                     }
 
                     if (!exists) {
-                        shortcutManager.requestPinShortcut(info, null);
+                        System.out.println("91 - false");
                     }
 
                     System.out.println("93 - true");
@@ -97,7 +98,9 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                 }
             }
             System.out.println("99 - false");
+
             result.success();
+            
         } else {
             result.notImplemented();
         }
