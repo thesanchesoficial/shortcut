@@ -8,26 +8,42 @@ class Shortcut {
   static Future<void> addShortcut({
     String? packageName,
     String? activityName,
+    String? file,
     required String assetName,
     required String name,
-
-    /// 这个最后会调用`intent.putExtra(key , value);`
     Map<String, dynamic> intentExtra = const {},
   }) async {
+
     Map<String, dynamic> map = {
       'asset': assetName,
       'name': name,
     };
+
     if (packageName != null) {
       map['packageName'] = packageName;
     }
+
     if (activityName != null) {
       map['activityName'] = activityName;
     }
+
+    if (file != null) {
+      map['file'] = file;
+    }
+
     for (String key in intentExtra.keys) {
       map[key] = intentExtra[key];
     }
-    String result = await _channel.invokeMethod('create', map);
-    print(result);
+
+    await _channel.invokeMethod('create', map);
+    
+  }
+
+  static Future<void> searchShortcut({
+    required String name,
+  }) async {
+
+    await _channel.invokeMethod('search', name);
+
   }
 }

@@ -45,41 +45,84 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
         if (call.method.equals("create")) {
+
             Intent shortcutInfoIntent = new Intent();
             Map<String, String> map = (Map<String, String>) call.arguments;
+
             if (map.containsKey("packageName") && map.containsKey("activityName")) {
                 shortcutInfoIntent.setClassName(map.get("packageName"), map.get("activityName"));
             }
+
             for (String key : map.keySet()) {
                 shortcutInfoIntent.putExtra(key, map.get(key));
             }
+
             shortcutInfoIntent.setAction(Intent.ACTION_MAIN);
-            String key = flutterPluginBinding.getFlutterAssets().getAssetFilePathByName(map.get("asset"));
-            addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromAssetsFile(key));
-            result.success("Android " + android.os.Build.VERSION.RELEASE);
+
+            if (map.containsKey("file")) {
+                addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromStorage(map.get("file")));
+            } else {
+                String key = flutterPluginBinding.getFlutterAssets().getAssetFilePathByName(map.get("asset"));
+                addShortcut((String) call.argument("name"), shortcutInfoIntent, getImageFromAssetsFile(key));
+            }
+
+            result.success();
+
+        } else if (call.method.equals("search")) {
+
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+
+            if (shortcutManager == null) {
+                System.out.println("76 - false");
+            }
+
+            if (shortcutManager.isRequestPinShortcutSupported()) {
+
+                try {
+
+                    List<ShortcutInfo> pinnedShortcuts = shortcutManager.getPinnedShortcuts();
+                    boolean exists = false;
+                    for (ShortcutInfo pinnedShortcut : pinnedShortcuts) {
+                        System.out.println("86 - " + pinnedShortcut.toString());
+                    }
+
+                    if (!exists) {
+                        shortcutManager.requestPinShortcut(info, null);
+                    }
+
+                    System.out.println("93 - true");
+
+                } catch (Exception e) {
+                    System.out.println("96 - false");
+                }
+            }
+            System.out.println("99 - false");
+            result.success();
         } else {
             result.notImplemented();
         }
     }
 
     private Bitmap getImageFromAssetsFile(String fileName) {
+        Bitmap image = null;
+        AssetManager am =  flutterPluginBinding.getApplicationContext().getAssets();
+        try {
+            InputStream is = am.open(fileName);
+            image = BitmapFactory.decodeStream(is);
+            is.close();
+        }
+        catch (IOException e) {}
+        return image;   
+    }
+
+    private Bitmap getImageFromStorage(String fileName) {
         fileName = fileName.replaceAll("flutter_assets/", "");
-
-        System.out.println(fileName);
-
-        File image2 = new  File("file:///storage/emulated/0/Download/2021-07-23.16.42.056");
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap2 = BitmapFactory.decodeFile(image2.getAbsolutePath(), bmOptions);
-
-        System.out.println(bitmap2);
-
         File image = new  File(fileName);
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-
-        System.out.println(bitmap);
-        
         return bitmap;
     }
+    
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
@@ -96,7 +139,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
         } else {
             ShortcutManager shortcutManager = (ShortcutManager) mContext.getSystemService(Context.SHORTCUT_SERVICE);
             if (null == shortcutManager) {
-                Log.e("MainActivity", "Create shortcut failed");
+                // Log.e("MainActivity", "Create shortcut failed");
                 return;
             }
             ShortcutInfo shortcutInfo = new ShortcutInfo.Builder(mContext, name)
