@@ -41,7 +41,7 @@ class Shortcut {
     
   }
 
-  static Future<void> searchShortcut({
+  static Future<bool> searchShortcut({
     required String id,
   }) async {
 
@@ -49,7 +49,11 @@ class Shortcut {
       'id': id,
     };
 
-    await _channel.invokeMethod('search', map);
+    var returnSearch = await _channel.invokeMethod('search', map);
+
+    if(returnSearch == true) return true;
+
+    return false;
 
   }
 }
