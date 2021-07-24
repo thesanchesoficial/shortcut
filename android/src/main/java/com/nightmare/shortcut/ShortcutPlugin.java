@@ -70,9 +70,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
 
         } else if (call.method.equals("search")) {
 
-            Map<String, String> map = (Map<String, String>) call.arguments;
-
-            if (map.containsKey("id")) {
+            if (call.arguments != null) {
                 
                 ShortcutManager shortcutManager = mContext.getSystemService(ShortcutManager.class);
 
@@ -80,7 +78,7 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                     System.out.println("Error");
                 }
 
-                System.out.println("ESSE É O ID - " + map.get("id"));
+                System.out.println("ESSE É O ID - " + call.arguments);
 
                 if (shortcutManager.isRequestPinShortcutSupported()) {
 
