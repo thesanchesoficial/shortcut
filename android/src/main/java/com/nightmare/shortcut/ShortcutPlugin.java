@@ -80,8 +80,6 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                     System.out.println("Error");
                 }
 
-                System.out.println("ESSE É O ID - " + map.get("id"));
-
                 if (shortcutManager.isRequestPinShortcutSupported()) {
 
                     try {
@@ -89,10 +87,13 @@ public class ShortcutPlugin implements FlutterPlugin, MethodCallHandler {
                         List<ShortcutInfo> pinnedShortcuts = shortcutManager.getPinnedShortcuts();
                         boolean exists = false;
                         for (ShortcutInfo pinnedShortcut : pinnedShortcuts) {
-                            System.out.println("92 - " + pinnedShortcut.getLongLabel().toString());
-                            System.out.println("93 - " + pinnedShortcut.getShortLabel().toString());
-                            System.out.println("94 - " + pinnedShortcut.getId().toString());
+                            if(TextUtils.equals(pinnedShortcut.getId(), map.get("id"))) {
+                                exists = true;
+                                break;
+                            }
                         }
+
+                        result.success(exists);
 
                     } catch (Exception e) {
                         System.out.println("Erro");
